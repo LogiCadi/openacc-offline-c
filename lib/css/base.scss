@@ -1,0 +1,102 @@
+view,
+scroll-view,
+swiper,
+swiper-item,
+movable-area,
+movable-view,
+cover-view,
+cover-image,
+icon,
+text,
+rich-text,
+progress,
+button,
+checkbox-group,
+checkbox,
+form,
+input,
+label,
+picker,
+picker-view,
+radio-group,
+radio,
+slider,
+switch,
+textarea,
+navigator,
+functional-page-navigator,
+image,
+video,
+camera,
+live-player,
+live-pusher,
+map,
+canvas,
+open-data,
+web-view,
+ad {
+	box-sizing: border-box;
+}
+
+/* 清除button样式 */
+button {
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	color: inherit;
+	font-size: 30upx;
+}
+
+button::after {
+	border: none;
+}
+
+.button-hover {
+	background-color: transparent;
+	color: inherit;
+}
+
+/* 不显示scroll-view的滚动条 */
+::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+	color: transparent;
+	display: none;
+}
+/* form */
+.uni-input-form {
+	height: 100%;
+}
+
+image {
+	width: 100%;
+	height: 100%;
+	vertical-align: middle;
+	/* will-change: transform; */
+}
+
+input {
+	height: auto;
+}
+
+/* 子元素居中 */
+.flex-set {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 元素居中,父元素需加定位 */
+.position-set {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* 单行文字,超出隐藏 */
+.text-overflow {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

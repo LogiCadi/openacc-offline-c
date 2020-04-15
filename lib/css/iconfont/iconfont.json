@@ -1,0 +1,30 @@
+{
+  "id": "1723253",
+  "name": "证券开户",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "本项目属于华夏长青-股师傅",
+  "glyphs": [
+    {
+      "icon_id": "704337",
+      "name": "下拉",
+      "font_class": "xiala",
+      "unicode": "e68f",
+      "unicode_decimal": 59023
+    },
+    {
+      "icon_id": "11487977",
+      "name": "arrow-right",
+      "font_class": "arrow-right",
+      "unicode": "e744",
+      "unicode_decimal": 59204
+    },
+    {
+      "icon_id": "11487978",
+      "name": "arrow-lift",
+      "font_class": "arrow-lift",
+      "unicode": "e743",
+      "unicode_decimal": 59203
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+@import './variable.scss';
+
+// 背景颜色
+@mixin bg-color-1() {
+	background-color: $theme-1_bg-color-1;
+	// [data-theme="theme2"] & {background-color: $theme-1_bg-color-2;}
+}
+@mixin bg-color-2() {
+	background-color: $theme-1_bg-color-2;
+	// [data-theme="theme2"] & {background-color: $theme-2_bg-color-2;}
+}
+
+// 字体颜色
+@mixin text-color-1() {
+	color: $theme-1_text-color-1;
+	// [data-theme="theme2"] & {color: $theme-2_text-color-1;}
+}
+@mixin text-color-2() {
+	color: $theme-1_text-color-2;
+	// [data-theme="theme2"] & {color: $theme-2_text-color-2;}
+}
+@mixin text-color-3() {
+	color: $theme-1_text-color-3;
+	// [data-theme="theme2"] & {color: $theme-2_text-color-3;}
+}
+@mixin text-color-4() {
+	color: $theme-1_text-color-4;
+	// [data-theme="theme2"] & {color: $theme-2_text-color-4;}
+}
+
+// 字体大小
+@mixin font-size($font-size){
+	font-size: $font-size;
+	[data-dpr="0.75"] & {font-size: $font-size * 0.75;}
+  	[data-dpr="1.25"] & {font-size: $font-size * 1.25;}
+  	[data-dpr="1.50"] & {font-size: $font-size * 1.50;}
+}
