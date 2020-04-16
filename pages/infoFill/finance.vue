@@ -231,7 +231,7 @@
 						flex: 1;
 
 						.radio {
-							transform: scale(0.7);
+							transform: scale(0.9);
 						}
 					}
 
@@ -268,7 +268,7 @@
 						margin: 10upx 0;
 
 						.radio {
-							transform: scale(0.7);
+							transform: scale(0.9);
 						}
 					}
 				}

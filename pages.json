@@ -27,7 +27,15 @@
 		{
 			"path": "pages/infoFill/experience"
 		}
-	],
+	    ,{
+            "path" : "pages/identity/index",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/success/success",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
