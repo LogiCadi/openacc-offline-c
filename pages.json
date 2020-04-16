@@ -5,9 +5,27 @@
 		},
 		{
 			"path": "pages/bussiness/index"
-		}, 
+		},
 		{
 			"path": "pages/bussiness/editEnter"
+		}, {
+			"path": "pages/regionSelect/index"
+		}
+
+		, {
+			"path": "pages/accountSelect/index"
+		}
+
+		, {
+			"path": "pages/auth/identityCard"
+		}, {
+			"path": "pages/infoFill/base"
+		},
+		{
+			"path": "pages/infoFill/finance"
+		}, 
+		{
+			"path": "pages/infoFill/experience"
 		}
 	],
 	"globalStyle": {

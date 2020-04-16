@@ -17,7 +17,7 @@
 	@import url("/lib/css/base.scss");
 	@import url("/lib/css/standard.scss");
 	@import url("/lib/css/iconfont/iconfont.css");
-
+	
 	page {
 		background-color: #FFF;
 		color: $text-color-2;

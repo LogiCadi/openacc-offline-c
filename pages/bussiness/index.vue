@@ -5,7 +5,7 @@
 		<cus-header></cus-header>
 
 		<view class="main-container flex-set">
-			<view class="button">开户申请</view>
+			<view class="button" @tap="$app.goPage(`/pages/regionSelect/index`)">开户申请</view>
 			<view class="button" @tap="$app.goPage(`/pages/bussiness/editEnter`)">继续开户/资料修改</view>
 		</view>
 	</view>
@@ -36,13 +36,13 @@
 		
 
 		.main-container {
-			min-height: 500upx;
+			min-height: 500rpx;
 			flex-direction: column;
 
 			.button {
-				padding: 20upx 40upx;
-				margin: 40upx;
-				border-radius: 10upx;
+				padding: 20rpx 40rpx;
+				margin: 40rpx;
+				border-radius: 10rpx;
 				color: #fff;
 				background: $text-color-1;
 			}

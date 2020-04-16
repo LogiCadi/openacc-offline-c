@@ -4,7 +4,7 @@
 		 mode="aspectFill"></image>
 		<view class="right-wrap">
 			<view class="link" @tap="$app.goPage(`/pages/index/index`)">首页</view>
-			<view class="link" @tap="$app.goPage(`/pages/bussiness/index`)">开户申请</view>
+			<view class="link" @tap="$app.goPage(`/pages/regionSelect/index`)">开户申请</view>
 			<view class="link" @tap="$app.toast(`关于我们`)">关于我们</view>
 		</view>
 	</view>
@@ -38,7 +38,6 @@
 
 			.link {
 				color: #333;
-				font-size: $font-s;
 				margin-left: 40rpx;
 			}
 		}
