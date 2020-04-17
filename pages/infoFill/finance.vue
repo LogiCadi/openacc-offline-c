@@ -189,7 +189,7 @@
 			
 			.tips {
 				margin: 0 20upx;
-				color: #E27325;
+				color: $text-color-3;
 			}
 
 			.title-sub {

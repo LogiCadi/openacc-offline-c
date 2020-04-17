@@ -6,11 +6,12 @@
 
 		<view class="main-container">
 			<image class="img" src="/static/image/完成.png" mode="aspectFill"></image>
-			
+			<view class="title">开户材料已完成</view>
+			<view class="title">请在工作人员指导下确认签字，等待审核</view>
 		</view>
 
 		<view class="button-wrap flex-set">
-			<cus-button @c-tap="$app.goPage(`/pages/identity/index`)">下一步</cus-button>
+			<cus-button @c-tap="$app.goPage(`/pages/index/index`)">返回首页</cus-button>
 		</view>
 	</view>
 </template>
@@ -46,7 +47,20 @@
 			margin: 80upx 50upx;
 			background-color: #F8F4F4;
 			box-shadow: 0upx 4upx 5upx 0upx rgba(#000, 0.11);
-			height: 270upx;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 40upx;
+			
+			.img {
+				width: 120upx;
+				height: 120upx;
+				padding: 20upx;
+			}
+			
+			.title {
+				padding: 10upx;
+			}
 		}
 
 		.button-wrap {

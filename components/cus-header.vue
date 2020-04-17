@@ -3,18 +3,23 @@
 		<image @tap="$app.goPage(`/pages/index/index`)" class="logo-img" src="http://h5.evergreen.group/img/logo.077823e4.png"
 		 mode="aspectFill"></image>
 		<view class="right-wrap">
-			<view class="link" @tap="$app.goPage(`/pages/index/index`)">首页</view>
-			<view class="link" @tap="$app.goPage(`/pages/regionSelect/index`)">开户申请</view>
-			<view class="link" @tap="$app.toast(`关于我们`)">关于我们</view>
+			<view class="link" :class="{active: index === 0}" @tap="$app.goPage(`/pages/index/index`)">首页</view>
+			<view class="link" :class="{active: index === 1}" @tap="$app.goPage(`/pages/regionSelect/index`)">开户申请</view>
+			<view class="link" :class="{active: index === 2}" @tap="$app.toast(`关于我们`)">关于我们</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
+		props: {
+			index: {
+				default: 0
+			}
+		},
 		data() {
 			return {
-
+				
 			};
 		}
 	}
@@ -38,7 +43,13 @@
 
 			.link {
 				color: #333;
-				margin-left: 40rpx;
+				padding: 5upx 10upx;
+				margin-left: 20upx;
+				
+				&.active {
+					color: $text-color-1;
+					border-bottom: 4upx solid $text-color-1;
+				}
 			}
 		}
 	}

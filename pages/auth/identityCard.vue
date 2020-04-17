@@ -6,10 +6,10 @@
 
 		<view class="main-container">
 			<view class="title">身份验证(1/3)</view>
-			<view class="tips">请保持扫描时光线良好，避免身份证放光</view>
+			<view class="tips">请保持扫描时光线良好，避免身份证反光</view>
 			<view class="imgs-wrap">
-				<image class="img" src="/static/image/身份证人像面.png" mode=""></image>
-				<image class="img" src="/static/image/身份证人像面.png" mode=""></image>
+				<image class="img" src="/static/image/身份证正面.png" mode=""></image>
+				<image class="img" src="/static/image/身份证反面.png" mode=""></image>
 			</view>
 			<view class="title">请核对身份信息是否与证件上一致，如有误请修改</view>
 			<form class="form-container">
@@ -85,11 +85,11 @@
 
 			.tips {
 				margin: 0 20upx;
-				color: #E27325;
+				color: $text-color-3;
 			}
 
 			.imgs-wrap {
-				margin: 40rpx 0;
+				margin: 30rpx 0;
 				display: flex;
 				justify-content: space-between;
 

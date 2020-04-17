@@ -14,8 +14,8 @@
 					</picker>
 				</view>
 				<view class="form-item">
-					<view class="label">证件类型</view>
-					<cus-input />
+					<view class="label">证件号码</view>
+					<cus-input placeholder="请填写证件号码"/>
 				</view>
 			</form>
 		</view>
@@ -46,9 +46,7 @@
 
 		},
 		methods: {
-			select(e) {
-				this.selectIndex = e.detail.value
-			}
+			
 		}
 	}
 </script>
