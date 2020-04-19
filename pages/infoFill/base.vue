@@ -12,43 +12,43 @@
 			<form class="form-container">
 				<view class="form-item">
 					<view class="label">称谓</view>
-					<radio-group class="right-input" @change="radioChange($event, 'callRadio')">
+					<radio-group class="right-input" @change="formData.appellation = parseInt($event.detail.value)">
 						<label class="radio-label" v-for="(item, index) in callRadio" :key="index">
-							<radio class="radio" color="#187747" :value="item.value" :checked="item.checked" />{{item.value}}</label>
+							<radio class="radio" color="#187747" :value="index+1+''" :checked="index+1 === formData.appellation" />{{item}}</label>
 					</radio-group>
 				</view>
 				<view class="form-row">
 					<view class="form-item">
 						<view class="label">姓氏</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.firstName" @input="$set(formData, 'firstName', $event)" />
 					</view>
 					<view class="form-item">
 						<view class="label">名字</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.lastName" @input="$set(formData, 'lastName', $event)" />
 					</view>
 					<view class="form-item">
 						<view class="label">中间名</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.middleName" @input="$set(formData, 'middleName', $event)" />
 					</view>
 				</view>
 				<view class="form-row">
 					<view class="form-item">
 						<view class="label">国籍</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.nationality" @input="$set(formData, 'nationality', $event)" />
 					</view>
 					<view class="form-item">
 						<view class="label">证件签发地</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.issuingCountry" @input="$set(formData, 'issuingCountry', $event)" />
 					</view>
 				</view>
 				<view class="form-row">
 					<view class="form-item">
 						<view class="label">联系方式</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.mobileNo" @input="$set(formData, 'mobileNo', $event)" />
 					</view>
 					<view class="form-item">
 						<view class="label">电子邮箱</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.email" @input="$set(formData, 'email', $event)" />
 					</view>
 				</view>
 			</form>
@@ -57,34 +57,35 @@
 			<form class="form-container">
 				<view class="form-item">
 					<view class="label">职业状态</view>
-					<picker class="right-input picker-css" @change="selectIndex = $event.detail.value" :range="selectList" :value="selectIndex">
-						<view class="uni-input">{{selectList[selectIndex]}}</view>
+					<picker class="right-input picker-css" @change="formData.jobStatus = $event.detail.value + 1" :range="selectList"
+					 :value="formData.jobStatus - 1">
+						<view class="uni-input">{{selectList[formData.jobStatus-1] || '请选择'}}</view>
 					</picker>
 				</view>
 				<view class="form-row">
 					<view class="form-item">
 						<view class="label">职位</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.jobInfo.position" @input="formData.jobInfo.position = $event" />
 					</view>
 					<view class="form-item">
 						<view class="label">服务年限</view>
-						<cus-input />
+						<cus-input class="right-input" :value="formData.jobInfo.workYear" @input="$set(formData, 'firstName', $event)" />
 					</view>
 				</view>
 				<view class="form-item">
 					<view class="label">公司名称</view>
-					<cus-input />
+					<cus-input class="right-input" :value="formData.jobInfo.companyName" @input="$set(formData, 'firstName', $event)" />
 				</view>
 				<view class="form-item">
 					<view class="label">公司地址</view>
-					<cus-input />
+					<cus-input class="right-input" :value="formData.jobInfo.companyAddr" @input="$set(formData, 'firstName', $event)" />
 				</view>
 				<view class="form-item">
 					<view class="label">上市公司</view>
 					<view class="right-input">
-						<radio-group class="right-input" @change="radioChange($event, 'jobRadio')">
-							<label class="radio-label" v-for="(item, index) in jobRadio" :key="index">
-								<radio class="radio" color="#187747" :value="item.value" :checked="item.checked" />{{item.value}}</label>
+						<radio-group class="right-input" @change="">
+							<label class="radio-label" v-for="(item, index) in ['否', '是']" :key="index">
+								<radio class="radio" color="#187747" :value="index" :checked="index === formData.jobInfo.listedStatus" />{{item}}</label>
 						</radio-group>
 					</view>
 				</view>
@@ -112,51 +113,23 @@
 		},
 		data() {
 			return {
-				callRadio: [{
-						value: '先生',
-						checked: true
-					},
-					{
-						value: '女士',
-						checked: false
-					},
-					{
-						value: '太太',
-						checked: false
-					},
-					{
-						value: '小姐',
-						checked: false
-					},
-				],
-
+				callRadio: ['先生', '女士', '太太', '小姐'],
 				selectList: ['受雇', '自雇', '退休', '其他'],
-				selectIndex: 0,
-				
-				jobRadio: [{
-						value: '是',
-						checked: true
-					},
-					{
-						value: '否',
-						checked: false
-					}
-				],
+
+				formData: {}
 			}
 		},
 		onLoad() {
-
+			this.loadData()
 		},
 		methods: {
-			// radio切换
-			radioChange(e, arrName) {
-				const value = e.detail.value
-				for (let key in this[arrName]) {
-					if (this[arrName][key].value === value) {
-						this[arrName][key].checked = true
-					}
-				}
-			}
+			async loadData() {
+				const res = await this.$app.http('account/openAccount/offline/basicInfoInit', {
+					applyId: this.$app.getData('applyId')
+				})
+
+				this.formData = res
+			},
 		}
 	}
 </script>

@@ -5,8 +5,8 @@
 		<cus-header :index="1" />
 
 		<view class="main-container">
-			<cus-button class="button" type="back" @c-tap="$app.goPage(`/pages/regionSelect/index`)">开户申请</cus-button>
-			<cus-button class="button" @c-tap="$app.goPage(`/pages/bussiness/editEnter`)">继续开户/资料修改</cus-button>
+			<cus-button class="button" @c-tap="$app.goPage(`/pages/regionSelect/index`)">开户申请</cus-button>
+			<cus-button class="button" type="back" @c-tap="$app.goPage(`/pages/bussiness/editEnter`)">继续开户/资料修改</cus-button>
 		</view>
 	</view>
 </template>

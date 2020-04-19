@@ -39,7 +39,7 @@
 
 		&.m {
 			padding: 20rpx 60rpx;
-			margin: 10upx 30upx;
+			margin: 10upx 20upx;
 			font-size: $font-m;
 		}
 

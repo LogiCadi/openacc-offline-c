@@ -1,15 +1,14 @@
 <template>
-	<!-- 上传身份证 -->
+	<!-- 上传护照 -->
 	<view class="index-page">
 
 		<cus-header-progress index="1" />
 
 		<view class="main-container">
-			<view class="title">身份证(1/3)</view>
+			<view class="title">护照({{region === 1? 2 : 1}}/3)</view>
 			<view class="tips">请保持拍摄时光线良好，避免证件反光</view>
 			<view class="imgs-wrap">
-				<image class="img" :src="imgs[0] || '/static/image/身份证正面.png'" mode="aspectFill" @tap="upload(0)"></image>
-				<image class="img" :src="imgs[1] || '/static/image/身份证反面.png'" mode="aspectFill" @tap="upload(1)"></image>
+				<image class="img" :src="imgs[0] || '/static/image/护照.png'" mode="aspectFill" @tap="upload(0)"></image>
 			</view>
 			<block v-if="imgs[0]">
 				<view class="title">请核对身份信息是否与证件上一致，如有误请修改</view>
@@ -18,9 +17,13 @@
 						<view class="label">姓名</view>
 						<cus-input class="right-input" :value="formData.name" @input="$set(formData, 'name', $event)" require />
 					</view>
-					<view class="form-item" v-if="region === 2 || region === 3">
+					<view class="form-item">
 						<view class="label">英文姓名</view>
 						<cus-input class="right-input" :value="formData.nameEn" @input="$set(formData, 'nameEn', $event)" require />
+					</view>
+					<view class="form-item">
+						<view class="label">护照号码</view>
+						<cus-input class="right-input" :value="formData.passportNo" @input="$set(formData, 'passportNo', $event)" require />
 					</view>
 					<view class="form-item">
 						<view class="label">性别</view>
@@ -31,22 +34,23 @@
 								<radio class="radio" color="#187747" value="2" :checked="formData.gender === 2" />女</label>
 						</radio-group>
 					</view>
-					<view class="form-item">
-						<view class="label">身份证号</view>
-						<cus-input class="right-input" :value="formData.idNo" @input="$set(formData, 'idNo', $event)" require />
-					</view>
+
 					<view class="form-item">
 						<view class="label">出生日期</view>
-
 						<picker class="right-input picker-css" mode="date" @change="$set(formData, 'birthDate', $event.detail.value)"
 						 :value="formData.birthDate">
 							<view>{{formData.birthDate || '请选择'}}</view>
 						</picker>
 					</view>
-					<view class="form-item" v-if="region === 1">
-						<view class="label">住址</view>
-						<cus-input class="right-input" :value="formData.idAddr" @input="$set(formData, 'idAddr', $event)" />
+
+					<view class="form-item">
+						<view class="label">国籍</view>
+						<picker class="right-input picker-css" @change="nationalityPickChange" :range="nationalityList" range-key="valueDesc"
+						 :value="nationalityIndex">
+							<view class="uni-input">{{nationalityList[nationalityIndex].valueDesc}}</view>
+						</picker>
 					</view>
+
 				</form>
 			</block>
 		</view>
@@ -72,18 +76,36 @@
 			return {
 				region: this.$app.getData('residentsType'),
 				imgs: [],
-				formData: {}
+				formData: {},
+				nationalityList: [], // 国籍枚举
 			}
 		},
 		onLoad() {
-			// this.loadData()
+			this.getNationalityList()
+		},
+		computed: {
+			nationalityIndex() {
+				for (let index in this.nationalityList) {
+					if (this.formData.nationality === this.nationalityList[index].value) {
+						return parseInt(index)
+					}
+				}
+				return 0
+			}
 		},
 		methods: {
-			async loadData() {
-				const res = await this.$app.http('account/openAccount/offline/idCardInit', {
-					applyId: this.$app.getData('applyId')
-				})
-				
+			nationalityPickChange(e) {
+				const selectIndex = e.detail.value
+				for (let index in this.nationalityList) {
+					if (parseInt(index) === selectIndex) {
+						this.$set(this.formData, 'nationality', this.nationalityList[index].value)
+						break
+					}
+				}
+			},
+			async getNationalityList() {
+				const res = await this.$app.http('account/openAccount/common/enumInit')
+				this.nationalityList = res.nationality
 			},
 			upload(side) {
 				// side 0 正面 1 反面
@@ -93,7 +115,7 @@
 						const {
 							resourceKey,
 							url
-						} = await this.$app.uploadOSS(path, 1, `openacc/${this.$app.getData('applyId') || 0}/idcard/${side}`)
+						} = await this.$app.uploadOSS(path, 1, `openacc/${this.$app.getData('applyId') || 0}/passport/${side}`)
 						// 显示已上传成功的图片
 						this.$set(this.imgs, side, url)
 						// ocr识别
@@ -102,10 +124,8 @@
 				})
 			},
 			async ocr(resourceKey, side) {
-				const res = await this.$app.http('account/openAccount/common/idCardOcr', {
+				const res = await this.$app.http('account/openAccount/common/passportOcr', {
 					resourceKey,
-					side: side === 0 ? 'face' : 'back',
-					idType: this.region, // 1： 中国大陆身份证 2： 中国香港身份证 3： 护照或者其他
 				})
 
 				for (let key in res) {
@@ -114,20 +134,15 @@
 			},
 			async nextStep() {
 				// 选择账户提交
-				const res = await this.$app.http('account/openAccount/offline/idCardSubmit', {
+				const res = await this.$app.http('account/openAccount/offline/passportSubmit', {
 					applyId: this.$app.getData('applyId'),
 					...this.formData,
-					"idFrontUrl": this.imgs[0], //证件正面照图片地址
-					"idBackUrl": this.imgs[1], //证件反面照图片地址
+					"passportUrl": this.imgs[0], //证件正面照图片地址
 				})
+
 				if (this.region === 1) {
-					// 
-					this.$app.goPage(`/pages/auth/hmTraffic`)
-				} else if (this.region === 2) {
-					// 住址证明
-					this.$app.goPage(`/pages/auth/addrProof`)
-				} else if (this.region === 3) {
-					// 过关证明
+					this.$app.goPage(`/pages/auth/bankCard`)
+				} else if (this.region === 4) {
 					this.$app.goPage(`/pages/auth/passProof`)
 				}
 

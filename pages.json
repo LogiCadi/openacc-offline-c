@@ -14,11 +14,33 @@
 
 		, {
 			"path": "pages/accountSelect/index"
-		}
-
-		, {
+		} , 
+		
+		{
 			"path": "pages/auth/identityCard"
-		}, {
+		},
+		
+		{
+			"path": "pages/auth/hmTraffic"
+		},
+		
+		{
+			"path": "pages/auth/passport"
+		},
+		
+		{
+			"path": "pages/auth/bankCard"
+		},
+		
+		{
+			"path": "pages/auth/passProof"
+		},
+		
+		{
+			"path": "pages/auth/addrProof"
+		},
+		
+		{
 			"path": "pages/infoFill/base"
 		},
 		{
@@ -37,10 +59,7 @@
         }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "线下开户C",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"
 	}
 }
