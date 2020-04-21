@@ -43,7 +43,7 @@
 					accType,
 					stockAccType
 				})
-				// 保存地区选择
+				// 保存选择
 				this.$app.setData('accType', accType)
 				this.$app.setData('stockAccType', stockAccType)
 				

@@ -70,9 +70,10 @@
 		.tips {
 			position: absolute;
 			bottom: -32upx;
-			font-size: $font-s;
+			font-size: $font-xs;
 			color: #f00;
 			padding: 0rpx 20rpx;
+			white-space: nowrap;
 		}
 
 	}

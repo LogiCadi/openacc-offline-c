@@ -43,6 +43,10 @@
 		{
 			"path": "pages/infoFill/base"
 		},
+		
+		{
+			"path": "pages/infoFill/joinAccBase"
+		},
 		{
 			"path": "pages/infoFill/finance"
 		}, 

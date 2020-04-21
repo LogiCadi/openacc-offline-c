@@ -5,7 +5,7 @@
 		<cus-header-progress index="2" />
 
 		<view class="main-container">
-			<view class="title">资料填写</view>
+			<view class="title">资料填写(联名账户)</view>
 
 			<view class="title-sub">个人信息</view>
 
@@ -19,28 +19,44 @@
 				</view>
 				<view class="form-row">
 					<view class="form-item">
-						<view class="label">姓氏</view>
+						<view class="label">姓名</view>
 						<cus-input class="right-input" :value="formData.lastName" @input="$set(formData, 'lastName', $event)" require />
 					</view>
 					<view class="form-item">
-						<view class="label">名字</view>
+						<view class="label">英文</view>
 						<cus-input class="right-input" :value="formData.firstName" @input="$set(formData, 'firstName', $event)" />
 					</view>
+				</view>
+				<view class="form-row">
 					<view class="form-item">
-						<view class="label">中间名</view>
-						<cus-input class="right-input" :value="formData.middleName" @input="$set(formData, 'middleName', $event)" />
+						<view class="label">证件号码</view>
+						<cus-input class="right-input" :value="formData.nationality" @input="$set(formData, 'nationality', $event)" require />
+					</view>
+					<view class="form-item">
+						<view class="label">签发国家</view>
+						<cus-input class="right-input" :value="formData.issuingCountry" @input="$set(formData, 'issuingCountry', $event)" />
 					</view>
 				</view>
 				<view class="form-row">
 					<view class="form-item">
 						<view class="label">国籍</view>
-						<cus-input class="right-input" :value="formData.nationality" @input="$set(formData, 'nationality', $event)"
-						 require />
+						<cus-input class="right-input" :value="formData.mobileNo" @input="$set(formData, 'mobileNo', $event)" />
 					</view>
 					<view class="form-item">
-						<view class="label">证件签发地</view>
-						<cus-input class="right-input" :value="formData.issuingCountry" @input="$set(formData, 'issuingCountry', $event)" />
+						<view class="label">生日</view>
+						<picker class="right-input picker-css" mode="date" @change="$set(formData, 'birthDate', $event.detail.value)"
+						 :value="formData.birthDate">
+							<view>{{formData.birthDate || '请选择'}}</view>
+						</picker>
 					</view>
+				</view>
+				<view class="form-item">
+					<view class="label">住宅地址</view>
+					<cus-input class="right-input" :value="formData.issuingCountry" @input="$set(formData, 'issuingCountry', $event)" />
+				</view>
+				<view class="form-item">
+					<view class="label">通信地址</view>
+					<cus-input class="right-input" :value="formData.issuingCountry" @input="$set(formData, 'issuingCountry', $event)" />
 				</view>
 				<view class="form-row">
 					<view class="form-item">
@@ -54,7 +70,7 @@
 				</view>
 			</form>
 
-			<view class="title-sub">个人信息</view>
+			<view class="title-sub">工作状态</view>
 			<form class="form-container">
 				<view class="form-item">
 					<view class="label">职业状态</view>
@@ -138,23 +154,19 @@
 		},
 		methods: {
 			async loadData() {
-				const res = await this.$app.http('account/openAccount/offline/basicInfoInit', {
+				const res = await this.$app.http('account/openAccount/offline/jointAccBasicInfoInit', {
 					applyId: this.$app.getData('applyId')
 				})
 
 				this.formData = res
 			},
 			async nextStep() {
-				const res = await this.$app.http('account/openAccount/offline/basicInfoSubmit', {
+				const res = await this.$app.http('account/openAccount/offline/jointAccBasicInfoSubmit', {
 					applyId: this.$app.getData('applyId'),
 					...this.formData,
 				})
-				if (this.accType === 2) {
-					// 联名账户
-					this.$app.goPage(`/pages/infoFill/joinAccBase`)
-				} else {
-					this.$app.goPage(`/pages/infoFill/finance`)
-				}
+			
+				this.$app.goPage(`/pages/infoFill/finance`)
 			}
 		}
 	}
@@ -201,6 +213,7 @@
 				}
 
 				.form-item {
+					flex: 1;
 					padding: 20rpx 0;
 					display: flex;
 					align-items: center;

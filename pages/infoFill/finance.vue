@@ -12,29 +12,45 @@
 			<form class="form-container">
 				<view class="form-item">
 					<view class="label">住房</view>
-					<radio-group class="right-input" @change="radioChange($event, 'liveRadio')">
-						<label class="radio-label" v-for="(item, index) in liveRadio" :key="index">
-							<radio class="radio" color="#187747" :value="item.value" :checked="item.checked" />{{item.value}}</label>
+					<radio-group class="right-input" @change="formData.housing = parseInt($event.detail.value) + 1">
+						<label class="radio-label" v-for="(item, index) in ['自置', '租住']" :key="index">
+							<radio class="radio" color="#187747" :value="index+''" :checked="index+1 === formData.housing" />{{item}}</label>
 					</radio-group>
 				</view>
-				<view class="form-row">
+				<view class="form-row" v-if="formData.housing === 1">
 					<view class="form-item">
-						<view class="label">总资产净值</view>
-						<picker class="right-input picker-css" @change="selectIndex = $event.detail.value" :range="selectList" :value="selectIndex">
-							<view class="uni-input">{{selectList[selectIndex]}}</view>
-						</picker>
+						<view class="label">剩余按揭</view>
+						<cus-input class="right-input" :value="formData.housingInfo.remainMortgage" @input="formData.housingInfo.remainMortgage = $event" />
 					</view>
-					<view class="form-item">
-						<view class="label">总资产净值</view>
-						<picker class="right-input picker-css" @change="selectIndex = $event.detail.value" :range="selectList" :value="selectIndex">
-							<view class="uni-input">{{selectList[selectIndex]}}</view>
-						</picker>
+					<view class="form-item" v-if="formData.housing === 2">
+						<view class="label">每月房贷</view>
+						<cus-input class="right-input" :value="formData.housingInfo.monthlyMortgage" @input="formData.housingInfo.monthlyMortgage = $event" />
 					</view>
 				</view>
 				<view class="form-item">
+					<view class="label">每月租金支出</view>
+					<cus-input class="right-input" :value="formData.housingInfo.monthlyRent" @input="formData.housingInfo.monthlyRent = $event" />
+				</view>
+
+				<view class="form-item">
+					<view class="label">总资产净值</view>
+					<picker class="right-input picker-css" @change="totalNetAssetsPickChange" :range="totalNetAssets" range-key="valueDesc"
+					 :value="totalNetAssetsIndex">
+						<view class="uni-input">{{totalNetAssets[totalNetAssetsIndex]&&totalNetAssets[totalNetAssetsIndex].valueDesc}}</view>
+					</picker>
+				</view>
+				<view class="form-item">
+					<view class="label">流动资产值</view>
+					<picker class="right-input picker-css" @change="circulatingAssetsPickChange" :range="circulatingAssets" range-key="valueDesc"
+					 :value="circulatingAssetsIndex">
+						<view class="uni-input">{{circulatingAssets[circulatingAssetsIndex]&&circulatingAssets[circulatingAssetsIndex].valueDesc}}</view>
+					</picker>
+				</view>
+				<view class="form-item">
 					<view class="label">年收入</view>
-					<picker class="right-input picker-css" @change="selectIndex = $event.detail.value" :range="selectList" :value="selectIndex">
-						<view class="uni-input">{{selectList[selectIndex]}}</view>
+					<picker class="right-input picker-css" @change="annualIncomePickChange" :range="annualIncome" range-key="valueDesc"
+					 :value="annualIncomeIndex">
+						<view class="uni-input">{{annualIncome[annualIncomeIndex]&&annualIncome[annualIncomeIndex].valueDesc}}</view>
 					</picker>
 				</view>
 
@@ -42,28 +58,34 @@
 					<view class="label">总资产净值(可多选)</view>
 				</view>
 
-				<checkbox-group class="form-row">
-					<label class="radio-label" style="width: 33%;" v-for="(item, index) in financeCheck" :key="index">
-						<checkbox :value="item.value" class="radio" color="#187747" :checked="item.checked" />{{item.value}}</label>
+				<checkbox-group class="form-row" @change="capitalSourceCheckboxChange">
+					<label class="radio-label" style="width: 33%;" v-for="(item, index) in capitalSource" :key="index">
+						<checkbox :value="item.value+''" class="radio" color="#187747" :checked="formData.capitalSource.includes(parseInt(item.value))" />{{item.valueDesc}}</label>
 					<cus-input />
 				</checkbox-group>
 
 				<view class="form-item">
-					<view class="label">投资目的(可多选)</view>
+					<view class="label">投资目的</view>
 				</view>
 
-				<checkbox-group class="form-row">
-					<label class="radio-label" style="width: 25%;" v-for="(item, index) in purposeCheck" :key="index">
-						<checkbox :value="item.value" class="radio" color="#187747" :checked="item.checked" />{{item.value}}</label>
-				</checkbox-group>
-				
+				<radio-group class="form-row" @change="formData.investTarget = parseInt($event.detail.value)">
+					<label class="radio-label" style="flex: 1;" v-for="(item, index) in ['收入', '对冲', '资本增值', '投机']" :key="index">
+						<radio class="radio" color="#187747" :value="index+1+''" :checked="index+1 === formData.investTarget" />{{item}}</label>
+				</radio-group>
+
+				<!-- <checkbox-group class="form-row" @change="investTargetCheckboxChange">
+					<label class="radio-label" style="width: 25%;" v-for="(item, index) in ['收入', '对冲', '资本增值', '投机']" :key="index">
+						<checkbox :value="index+1+''" class="radio" color="#187747" :checked="formData.investTarget&&formData.investTarget.includes(index+1)" />{{item}}</label>
+				</checkbox-group> -->
+
 				<view class="form-item">
 					<view class="label">可承受风险</view>
-					<picker class="right-input picker-css" @change="riskIndex = $event.detail.value" :range="riskPick" :value="riskIndex">
-						<view class="uni-input">{{riskPick[riskIndex]}}</view>
+					<picker class="right-input picker-css" @change="formData.riskTolerance = $event.detail.value + 1" :range="riskPick"
+					 :value="formData.riskTolerance - 1">
+						<view class="uni-input">{{riskPick[formData.riskTolerance - 1]}}</view>
 					</picker>
 				</view>
-				
+
 				<view class="tips">注：证券保证金购买账户属于“中等风险”或“高风险”类别</view>
 
 
@@ -73,7 +95,7 @@
 
 		<view class="button-wrap flex-set">
 			<cus-button @c-tap="$app.goBack()" type="back">上一步</cus-button>
-			<cus-button @c-tap="$app.goPage(`/pages/infoFill/experience`)">下一步</cus-button>
+			<cus-button @c-tap="nextStep">下一步</cus-button>
 		</view>
 	</view>
 </template>
@@ -90,85 +112,125 @@
 		},
 		data() {
 			return {
-				liveRadio: [{
-						value: '自住',
-						checked: true
+				formData: {
+					"housing": 1, // 1 - 自置， 2 - 租住 参考枚举
+					"housingDesc": "",
+					"housingInfo": {
+						"remainMortgage": "", // 剩余按揭
+						"monthlyMortgage": "", // 每月按揭
+						"monthlyRent": "", // 每月房租
 					},
-					{
-						value: '租住',
-						checked: false
-					},
-				],
+					"annualIncome": 1, //全年收入 参考枚举
+					"annualIncomeDesc": "",
+					"totalNetAssets": 1, // 总资产净值  参考枚举
+					"totalNetAssetsDesc": "",
+					"circulatingAssets": 1, // 流动资产值 参考枚举
+					"circulatingAssetsDesc": "",
+					"capitalSource": [1, 2], // 资金来源  支持多个值 参考枚举
+					"capitalSourceDesc": ["", ""], // 资金来源描述
+					"investTarget": "1", // 投资目标  参考枚举
+					"investTargetDesc": "",
+					"riskTolerance": "1", // 风险承受能力
+					"riskToleranceDesc": ""
+				},
 
-				selectList: ['受雇', '自雇', '退休', '其他'],
-				selectIndex: 0,
+				totalNetAssets: [], // 净资产值
+				circulatingAssets: [], // 流动资产值
+				annualIncome: [], // 全年收入值
+				capitalSource: [], // 资金来源
 
-				financeCheck: [{
-					value: '工作收入',
-					checked: true
-				}, {
-					value: '投资收益',
-					checked: false
-				}, {
-					value: '馈赠',
-					checked: false
-				}, {
-					value: '商业买卖收益',
-					checked: false
-				}, {
-					value: '遗产继承',
-					checked: false
-				}, {
-					value: '诉讼收益',
-					checked: false
-				}, {
-					value: '退休金',
-					checked: false
-				}, {
-					value: '配偶/父母',
-					checked: false
-				}, {
-					value: '赌博',
-					checked: false
-				}, {
-					value: '保险收益',
-					checked: false
-				}, {
-					value: '其他（请注明）',
-					checked: false
-				}, ],
-
-				purposeCheck: [{
-					value: '收入',
-					checked: false
-				}, {
-					value: '对冲',
-					checked: false
-				}, {
-					value: '资本增值',
-					checked: false
-				}, {
-					value: '投机',
-					checked: false
-				}],
-				
-				riskPick: ['中风险', '较高风险'],
+				riskPick: ['低风险', '中风险', '高风险'],
 				riskIndex: 0,
 			}
 		},
 		onLoad() {
-
+			this.loadData()
+			this.getEnum()
 		},
-		methods: {
-			// radio切换
-			radioChange(e, arrName) {
-				const value = e.detail.value
-				for (let key in this[arrName]) {
-					if (this[arrName][key].value === value) {
-						this[arrName][key].checked = true
+		computed: {
+			totalNetAssetsIndex() {
+				for (let index in this.totalNetAssets) {
+					if (this.formData.totalNetAssets === this.totalNetAssets[index].value) {
+						return parseInt(index)
 					}
 				}
+				return 0
+			},
+			circulatingAssetsIndex() {
+				for (let index in this.circulatingAssets) {
+					if (this.formData.circulatingAssets === this.circulatingAssets[index].value) {
+						return parseInt(index)
+					}
+				}
+				return 0
+			},
+			annualIncomeIndex() {
+				for (let index in this.annualIncome) {
+					if (this.formData.annualIncome === this.annualIncome[index].value) {
+						return parseInt(index)
+					}
+				}
+				return 0
+			},
+		},
+		methods: {
+			totalNetAssetsPickChange(e) {
+				const selectIndex = e.detail.value
+				for (let index in this.totalNetAssets) {
+					if (parseInt(index) === selectIndex) {
+						this.$set(this.formData, 'totalNetAssets', this.totalNetAssets[index].value)
+						break
+					}
+				}
+			},
+			circulatingAssetsPickChange(e) {
+				const selectIndex = e.detail.value
+				for (let index in this.circulatingAssets) {
+					if (parseInt(index) === selectIndex) {
+						this.$set(this.formData, 'circulatingAssets', this.circulatingAssets[index].value)
+						break
+					}
+				}
+			},
+			annualIncomePickChange(e) {
+				const selectIndex = e.detail.value
+				for (let index in this.annualIncome) {
+					if (parseInt(index) === selectIndex) {
+						this.$set(this.formData, 'annualIncome', this.annualIncome[index].value)
+						break
+					}
+				}
+			},
+			capitalSourceCheckboxChange(e) {
+				this.formData.capitalSource = e.detail.value.map(e => parseInt(e))
+			},
+			investTargetCheckboxChange(e) {
+				this.formData.investTarget = e.detail.value.map(e => parseInt(e))
+			},
+
+			async getEnum() {
+				const res = await this.$app.http('account/openAccount/common/enumInit')
+				this.totalNetAssets = res.totalNetAssets
+				this.circulatingAssets = res.circulatingAssets
+				this.annualIncome = res.annualIncome
+				this.capitalSource = res.capitalSource
+			},
+			async loadData() {
+				const res = await this.$app.http('account/openAccount/offline/financeInit', {
+					applyId: this.$app.getData('applyId')
+				})
+
+				if (res) this.formData = res
+			},
+			async nextStep() {
+				const res = await this.$app.http('account/openAccount/offline/financeSubmit', {
+					applyId: this.$app.getData('applyId'),
+					...this.formData,
+				})
+
+				this.$app.goPage(`/pages/infoFill/experience`)
 			}
+
 		}
 	}
 </script>
@@ -186,7 +248,7 @@
 				font-size: $font-l;
 				border-left: 8rpx solid $text-color-1;
 			}
-			
+
 			.tips {
 				margin: 0 20upx;
 				color: $text-color-3;
@@ -221,6 +283,7 @@
 					align-items: center;
 
 					.label {
+						min-width: 180upx;
 						text-align: right;
 						padding: 0 20rpx;
 					}
